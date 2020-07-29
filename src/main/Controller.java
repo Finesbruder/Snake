@@ -18,15 +18,18 @@ public class Controller implements ActionListener {
     final Dimension playArea;
 
     public Controller(){
+        //SETTING UP FRAME
         frameSize = new Dimension(800,800);
         playArea = new Dimension(800,800);
+
+        //SETTING UP GAME BACKEND
         board = new Board(20,20, playArea.width/20, playArea.height/20, this);
         snake = board.getSnake();
 
-
+        //SETTING UP GUI
         view = new View(frameSize, playArea,this);
-        view.setBlockSizes(playArea.width/20, playArea.height/20);
-        view.drawColoredSquare(new Point(10,0), 40, Color.BLUE);
+
+        //STARTS GAME
         timer = new Timer(200, this);
         timer.start();
     }
@@ -40,10 +43,10 @@ public class Controller implements ActionListener {
         Iterator<Block> iter = board.getUpdatedBlocks();
         while(iter.hasNext()){
             Block block = iter.next();
-            view.drawBlock(block);
-            System.out.println("Male Block auf " + block.getX() + " und " + block.getY() + " " + block.color);
+            view.drawColoredSquare(new Point(block.getX(),block.getY()), 40, block.color);
             iter.remove();
         }
+        view.renderPanel.repaint();
         board.updateBoardState();
     }
 

@@ -30,11 +30,6 @@ public class View extends JFrame implements KeyListener{
         jframe.setVisible(true);
     }
 
-    public void drawBoard(Block[][] blocks) {
-        renderPanel.drawBoard(blocks);
-        renderPanel.repaint();
-    }
-
     public void drawColoredSquare(Point p, int scale, Color c){
         renderPanel.drawColoredSquare(p, scale, c);
     }
@@ -67,9 +62,6 @@ public class View extends JFrame implements KeyListener{
     @Override
     public void keyReleased(KeyEvent e) {}
 
-    public void setBlockSizes(int i, int i1) {
-        renderPanel.setBlockSizes(i, i1);
-    }
 
 
     public void drawBlock(Block block) {
