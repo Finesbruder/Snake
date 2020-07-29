@@ -11,7 +11,6 @@ public class Board {
     Color endColor;
     int boardHeight;
     int boardWidth;
-    //TODO: Vereinen mit pointsToUpdate
     HashMap<Point, Block> memory;
 
 

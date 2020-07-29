@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -15,28 +14,34 @@ public class Controller implements ActionListener {
     Board board;
     Timer timer;
     Snake snake;
-    final Dimension frameSize;
-    final Dimension playArea;
+    final Dimension FRAMESIZE;
+    final Dimension PLAYAREA;
+    final int SCALE;
+    final int SIDELENGTH;
+    final int PLAYSIZE;
 
-    public Controller(){
+    public Controller(int playSize, int blocksPerSide){
         //SETTING UP FRAME
-        frameSize = new Dimension(800,800);
-        playArea = new Dimension(800,800);
+        PLAYSIZE = playSize;
+        FRAMESIZE = new Dimension(PLAYSIZE,PLAYSIZE);
+        PLAYAREA = new Dimension(PLAYSIZE,PLAYSIZE);
+        SIDELENGTH = blocksPerSide;
+        SCALE = PLAYSIZE/SIDELENGTH;
 
         //SETTING UP GAME BACKEND
-        board = new Board(20,20, this);
+        board = new Board(SIDELENGTH,SIDELENGTH, this);
         snake = board.getSnake();
 
         //SETTING UP GUI
-        view = new View(frameSize, playArea,this);
+        view = new View(FRAMESIZE, PLAYAREA,this);
 
         //STARTS GAME
-        timer = new Timer(200, this);
+        timer = new Timer(150, this);
         timer.start();
     }
 
     public static void main(String[] args){
-        new Controller();
+        new Controller(800,80);
     }
 
     @Override
@@ -44,7 +49,7 @@ public class Controller implements ActionListener {
         Iterator<Map.Entry<Point, Block>> iter = board.getUpdatedBlocks();
         while(iter.hasNext()){
             Block block = iter.next().getValue();
-            view.drawColoredSquare(new Point(block.getX(),block.getY()), 40, block.color);
+            view.drawColoredSquare(new Point(block.getX(),block.getY()), SCALE, block.color);
             iter.remove();
         }
         view.renderPanel.repaint();
@@ -57,6 +62,6 @@ public class Controller implements ActionListener {
     }
 
     public void speedUpTimer() {
-        timer.setDelay(timer.getDelay()-10);
+        timer.setDelay((int) (timer.getDelay()-timer.getDelay()*0.05));
     }
 }
