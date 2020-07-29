@@ -15,22 +15,24 @@ public class Block {
 
     int x;
     int y;
-    int height;
-    int width;
     Color color;
 
-    public Block(int x, int y, Color c){
+    public Block(int x, int y, Color c) {
         color = c;
         this.x = x;
         this.y = y;
     }
 
     public void setPosition(int x2, int y2) {
-        this.x = x+x2;
-        this.y = y+y2;
+        this.x = x + x2;
+        this.y = y + y2;
     }
 
-    public String toString(){
+    public String toString() {
         return "Ich bin ein Block auf: " + x + y;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }
