@@ -97,8 +97,9 @@ public class Board {
         Random generator = new Random();
         int randX = generator.nextInt(boardBlocks.length);
         int randY = generator.nextInt(boardBlocks[0].length);
-        if(boardBlocks[randX][randY] instanceof SnakeBlock){
-            spawnCherry();
+        while(boardBlocks[randX][randY] instanceof SnakeBlock){
+            randX = generator.nextInt(boardBlocks.length);
+            randY = generator.nextInt(boardBlocks[0].length);
         }
         cherry = new Cherry(randX, randY);
         boardBlocks[randX][randY] = cherry;
