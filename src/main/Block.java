@@ -15,8 +15,6 @@ public class Block {
 
     int x;
     int y;
-    int height;
-    int width;
     Color color;
 
     public Block(int x, int y, Color c){
@@ -32,5 +30,9 @@ public class Block {
 
     public String toString(){
         return "Ich bin ein Block auf: " + x + y;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }

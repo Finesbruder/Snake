@@ -14,10 +14,12 @@ public class View extends JFrame implements KeyListener{
 
     public View(Dimension frameSize, Dimension playArea, Controller controller){
         this.controller = controller;
+        initComponents(frameSize, playArea);
+    }
+
+    public void initComponents(Dimension frameSize, Dimension playArea){
         jframe = new JFrame("Snakerüüüüüüüüüüüü");
         renderPanel = new RenderPanel(playArea);
-        renderPanel.setLayout(new GridLayout(20, 20,5,5));
-
         jframe.add(renderPanel);
         jframe.addKeyListener(this);
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,6 +33,10 @@ public class View extends JFrame implements KeyListener{
     public void drawBoard(Block[][] blocks) {
         renderPanel.drawBoard(blocks);
         renderPanel.repaint();
+    }
+
+    public void drawColoredSquare(Point p, int scale, Color c){
+        renderPanel.drawColoredSquare(p, scale, c);
     }
 
     @Override
@@ -66,4 +72,8 @@ public class View extends JFrame implements KeyListener{
     }
 
 
+    public void drawBlock(Block block) {
+        renderPanel.drawColoredSquare(new Point(block.getX(), block.getY()), 40, block.color);
+
+    }
 }

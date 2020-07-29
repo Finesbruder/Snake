@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Controller implements ActionListener {
 
@@ -24,7 +26,7 @@ public class Controller implements ActionListener {
 
         view = new View(frameSize, playArea,this);
         view.setBlockSizes(playArea.width/20, playArea.height/20);
-        view.drawBoard(board.getBoard());
+        view.drawColoredSquare(new Point(10,0), 40, Color.BLUE);
         timer = new Timer(200, this);
         timer.start();
     }
@@ -35,7 +37,13 @@ public class Controller implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        view.drawBoard(board.getBoard());
+        Iterator<Block> iter = board.getUpdatedBlocks();
+        while(iter.hasNext()){
+            Block block = iter.next();
+            view.drawBlock(block);
+            System.out.println("Male Block auf " + block.getX() + " und " + block.getY() + " " + block.color);
+            iter.remove();
+        }
         board.updateBoardState();
     }
 
