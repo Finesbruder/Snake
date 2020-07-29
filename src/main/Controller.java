@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 
 public class Controller implements ActionListener {
 
@@ -23,7 +24,7 @@ public class Controller implements ActionListener {
         playArea = new Dimension(800,800);
 
         //SETTING UP GAME BACKEND
-        board = new Board(20,20, playArea.width/20, playArea.height/20, this);
+        board = new Board(20,20, this);
         snake = board.getSnake();
 
         //SETTING UP GUI
@@ -40,9 +41,9 @@ public class Controller implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Iterator<Block> iter = board.getUpdatedBlocks();
+        Iterator<Map.Entry<Point, Block>> iter = board.getUpdatedBlocks();
         while(iter.hasNext()){
-            Block block = iter.next();
+            Block block = iter.next().getValue();
             view.drawColoredSquare(new Point(block.getX(),block.getY()), 40, block.color);
             iter.remove();
         }

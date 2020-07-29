@@ -1,39 +1,32 @@
 package main;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
 
 public class Board {
 
-    Block[][] boardBlocks;
     Snake snake;
-    int blockHeight;
-    int blockWidth;
     Cherry cherry;
     Controller controller;
     Color endColor;
     int boardHeight;
     int boardWidth;
-    ArrayList<Block> blocksToUpdate;
+    //TODO: Vereinen mit pointsToUpdate
+    HashMap<Point, Block> memory;
 
 
-    public Board(int v, int h, int blockWidth, int blockHeight, Controller controller) {
+    public Board(int height, int width, Controller controller) {
 
-        boardHeight = v;
-        boardWidth = h;
-        blocksToUpdate = new ArrayList<>();
-        this.blockHeight = blockHeight;
+        boardHeight = height;
+        boardWidth = width;
         this.controller = controller;
-        this.blockWidth = blockWidth;
-        endColor = new Color(0, 0, 0);
-        boardBlocks = new Block[h][v];
-        for (int i = 0; i < boardBlocks.length; i++) {
-            for (int j = 0; j < boardBlocks[i].length; j++) {
-                boardBlocks[i][j] = new Block(i, j, endColor);
+        memory = new HashMap<>();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                memory.put(new Point(j, i), new Block(j, i, Color.BLACK));
             }
         }
+        endColor = new Color(0, 0, 0);
         spawnSnake();
         spawnCherry();
     }
@@ -43,7 +36,7 @@ public class Board {
             if (!cherryEaten()) {
                 Block snakeTailEnd = snake.getTailEnd();
                 snakeTailEnd = new Block(snakeTailEnd.getX(), snakeTailEnd.getY(), Color.BLACK);
-                blocksToUpdate.add(snakeTailEnd);
+                memory.put(new Point((int) snakeTailEnd.getX(), (int) snakeTailEnd.getY()), snakeTailEnd);
                 snake.move();
             } else {
                 snake.growAndMove();
@@ -52,23 +45,10 @@ public class Board {
             try {
                 Block[] snakeBlocks = snake.getBody();
                 for (int i = 0; i < snakeBlocks.length; i++) {
-                    boardBlocks[snakeBlocks[i].getX()][snakeBlocks[i].getY()] = snakeBlocks[i];
-                    blocksToUpdate.add(snakeBlocks[i]);
+                    memory.put(new Point((int) snakeBlocks[i].getX(), (int) snakeBlocks[i].getY()), snakeBlocks[i]);
                 }
             } catch (Exception e) {
                 snake.kill();
-            }
-        } else {
-            endScreen();
-        }
-    }
-
-    private void endScreen() {
-        for (int i = 0; i < boardBlocks.length; i++) {
-            Random ran = new Random();
-            endColor = new Color(i * 30 % 256, ran.nextInt(256), ran.nextInt(256));
-            for (int j = 0; j < boardBlocks[i].length; j++) {
-                boardBlocks[i][j] = new Block(i, j, endColor);
             }
         }
     }
@@ -83,26 +63,20 @@ public class Board {
     }
 
     public void spawnSnake() {
-        snake = new Snake(new SnakeBlock(boardBlocks.length / 2, 0), controller);
-        boardBlocks[boardBlocks.length / 2][0] = snake.getHead();
-        blocksToUpdate.add(boardBlocks[boardBlocks.length / 2][0]);
+        snake = new Snake(new SnakeBlock(boardWidth / 2, 0), controller);
+        memory.put(new Point(boardWidth / 2, 0), snake.getHead());
     }
 
-    public Iterator<Block> getUpdatedBlocks() {
-        System.out.println(blocksToUpdate.size());
-        return blocksToUpdate.iterator();
+    public Iterator<Map.Entry<Point, Block>> getUpdatedBlocks() {
+        return memory.entrySet().iterator();
     }
 
     public void spawnCherry() {
         Random generator = new Random();
-        int randX = generator.nextInt(boardBlocks.length);
-        int randY = generator.nextInt(boardBlocks[0].length);
-        while(boardBlocks[randX][randY] instanceof SnakeBlock){
-            randX = generator.nextInt(boardBlocks.length);
-            randY = generator.nextInt(boardBlocks[0].length);
-        }
+        int randX = generator.nextInt(boardWidth);
+        int randY = generator.nextInt(boardHeight);
+
         cherry = new Cherry(randX, randY);
-        boardBlocks[randX][randY] = cherry;
-        blocksToUpdate.add(cherry);
+        memory.put(new Point(randX, randY), cherry);
     }
 }
