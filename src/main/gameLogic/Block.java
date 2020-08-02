@@ -1,4 +1,4 @@
-package main;
+package main.gameLogic;
 
 import java.awt.*;
 
@@ -32,7 +32,8 @@ public class Block {
         return "Ich bin ein Block auf: " + x + y;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+
+    public Color getColor() {
+        return color;
     }
 }

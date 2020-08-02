@@ -1,5 +1,8 @@
 package main;
 
+import main.gameLogic.*;
+import main.gui.View;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,7 +19,7 @@ public class Controller implements ActionListener {
     Snake snake;
     final Dimension FRAMESIZE;
     final Dimension PLAYAREA;
-    final int SCALE;
+    final int BLOCKSCALE;
     final int SIDELENGTH;
     final int PLAYSIZE;
 
@@ -26,7 +29,7 @@ public class Controller implements ActionListener {
         FRAMESIZE = new Dimension(PLAYSIZE,PLAYSIZE);
         PLAYAREA = new Dimension(PLAYSIZE,PLAYSIZE);
         SIDELENGTH = blocksPerSide;
-        SCALE = PLAYSIZE/SIDELENGTH;
+        BLOCKSCALE = PLAYSIZE/SIDELENGTH;
 
         //SETTING UP GAME BACKEND
         board = new Board(SIDELENGTH,SIDELENGTH, this);
@@ -41,7 +44,7 @@ public class Controller implements ActionListener {
     }
 
     public static void main(String[] args){
-        new Controller(800,80);
+        new Controller(800,20);
     }
 
     @Override
@@ -49,7 +52,12 @@ public class Controller implements ActionListener {
         Iterator<Map.Entry<Point, Block>> iter = board.getUpdatedBlocks();
         while(iter.hasNext()){
             Block block = iter.next().getValue();
-            view.drawColoredSquare(new Point(block.getX(),block.getY()), SCALE, block.color);
+            if(block instanceof Cherry){
+                view.drawApple(new Point(block.getX(),block.getY()), BLOCKSCALE);
+            }else{
+                view.drawColoredSquare(new Point(block.getX(),block.getY()), BLOCKSCALE, block.getColor());
+            }
+
             iter.remove();
         }
         view.renderPanel.repaint();

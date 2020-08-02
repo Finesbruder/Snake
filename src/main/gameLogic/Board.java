@@ -1,4 +1,6 @@
-package main;
+package main.gameLogic;
+
+import main.Controller;
 
 import java.awt.*;
 import java.util.*;
@@ -34,21 +36,19 @@ public class Board {
         if (!snake.isDead()) {
             if (!cherryEaten()) {
                 Block snakeTailEnd = snake.getTailEnd();
+
+                //RECOLORING THE TAIL BLACK
                 snakeTailEnd = new Block(snakeTailEnd.getX(), snakeTailEnd.getY(), Color.BLACK);
-                memory.put(new Point((int) snakeTailEnd.getX(), (int) snakeTailEnd.getY()), snakeTailEnd);
+                memory.put(new Point(snakeTailEnd.getX(), snakeTailEnd.getY()), snakeTailEnd);
                 snake.move();
             } else {
                 snake.growAndMove();
                 spawnCherry();
             }
-            try {
-                Block[] snakeBlocks = snake.getBody();
-                for (int i = 0; i < snakeBlocks.length; i++) {
-                    memory.put(new Point((int) snakeBlocks[i].getX(), (int) snakeBlocks[i].getY()), snakeBlocks[i]);
-                }
-            } catch (Exception e) {
-                snake.kill();
-            }
+            //NEW TAIL AND HEAD
+            memory.put(new Point(snake.getHead().getX(), snake.getHead().getY()), snake.getHead());
+            memory.put(new Point(snake.getTailEnd().getX(), snake.getTailEnd().getY()), snake.getTailEnd());
+
         }
     }
 
@@ -74,7 +74,6 @@ public class Board {
         Random generator = new Random();
         int randX = generator.nextInt(boardWidth);
         int randY = generator.nextInt(boardHeight);
-
         cherry = new Cherry(randX, randY);
         memory.put(new Point(randX, randY), cherry);
     }

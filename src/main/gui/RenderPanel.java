@@ -1,4 +1,5 @@
-package main;
+package main.gui;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -6,24 +7,21 @@ import java.awt.*;
 import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 public class RenderPanel extends JPanel {
 
     Dimension playArea;
-    Block[][] blocksToDraw;
-    BlockPanel[][] blockPanels;
-    int blockWidth;
-    int blockHeight;
     BufferedImage screen;
     WritableRaster screenRaster;
+    BufferedImage image;
 
     public RenderPanel(Dimension playAreaDimension) {
-
         this.setPreferredSize(playAreaDimension);
-        setLayout(null);
         this.playArea = playAreaDimension;
+        setLayout(null);
         initScreen();
+        image = requestImage();
+
     }
 
     public void initScreen() {
@@ -38,8 +36,8 @@ public class RenderPanel extends JPanel {
             pixels[i] = color.getRGB();
         }
         screenRaster.setDataElements((int) point.getX() * scale, (int) point.getY() * scale, scale, scale, pixels);
-
     }
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -47,11 +45,11 @@ public class RenderPanel extends JPanel {
         g.drawImage(screen, 0, 0, null);
     }
 
-    public Image requestImage() {
+    public BufferedImage requestImage() {
 
-        Image image = null;
+        BufferedImage image = null;
         try {
-            image = ImageIO.read(new File("C:\\Users\\Florian\\Desktop\\Snake sprite sheet_0.png"));
+            image = ImageIO.read(new File("C:\\Users\\Florian\\Desktop\\download.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,4 +58,16 @@ public class RenderPanel extends JPanel {
 
     }
 
+    public void drawApple(Point point, int scale) {
+
+        BufferedImage apple = image.getSubimage(0, 0, 48, 151);
+        Raster raster = apple.getRaster();
+        int[] pixels = new int[raster.getHeight() * raster.getWidth()];
+        System.out.println(pixels.length);
+        raster.getPixel(0, 0, pixels);
+
+        screenRaster.setDataElements((int) point.getX() * scale, (int) point.getY() * scale, scale, scale, pixels);
+    }
 }
+
+

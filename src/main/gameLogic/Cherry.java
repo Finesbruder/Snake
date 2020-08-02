@@ -1,4 +1,5 @@
-package main;
+package main.gameLogic;
+
 
 import java.awt.*;
 

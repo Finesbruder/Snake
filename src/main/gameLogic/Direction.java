@@ -1,4 +1,4 @@
-package main;
+package main.gameLogic;
 
 public enum Direction {
     UP, DOWN, LEFT, RIGHT;

@@ -1,10 +1,11 @@
-package main;
+package main.gui;
+
+import main.Controller;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 
 public class View extends JFrame implements KeyListener{
 
@@ -62,10 +63,7 @@ public class View extends JFrame implements KeyListener{
     @Override
     public void keyReleased(KeyEvent e) {}
 
-
-
-    public void drawBlock(Block block) {
-        renderPanel.drawColoredSquare(new Point(block.getX(), block.getY()), 40, block.color);
-
+    public void drawApple(Point point, int scale) {
+        renderPanel.drawApple(point, scale);
     }
 }

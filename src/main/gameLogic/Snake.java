@@ -1,5 +1,6 @@
-package main;
+package main.gameLogic;
 
+import main.Controller;
 
 public class Snake {
 
@@ -74,10 +75,6 @@ public class Snake {
         System.arraycopy(bodyBlocks, 0, blocks, 0, bodyBlocks.length);
         blocks[blocks.length - 1] = block;
         bodyBlocks = blocks;
-    }
-
-    public Block[] getBody() {
-        return this.bodyBlocks;
     }
 
     public void growAndMove() {
